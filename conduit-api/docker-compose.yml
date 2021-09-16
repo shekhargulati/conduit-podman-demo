@@ -1,0 +1,31 @@
+version: '3'
+services:
+  conduit-api:
+    image: com.conduitapp/api
+    ports: 
+      - "8080:8080"
+    networks:
+      - app_net
+    environment:
+      - "SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/conduit"
+      - "SPRING_DATASOURCE_USERNAME=root"
+      - "SPRING_DATASOURCE_PASSWORD=password"
+    depends_on: 
+      - db
+  conduit-frontend:
+    image: com.conduitapp/frontend
+    networks:
+      - app_net
+    ports: 
+      - "8000:80"
+  mysql:
+    image: mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=password"
+      - "MYSQL_DATABASE=conduit"
+    ports: 
+      - "3306:3306"
+
+networks:
+  app_net:
+    driver: bridge
